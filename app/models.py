@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 Base = declarative_base()
@@ -7,8 +7,14 @@ Base = declarative_base()
 class Nome(Base):
     __tablename__ = 'nomes'
 
-    id = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
     nome = Column(String, unique=True)
-    nome_normalizado = Column(String, unique=True) # nome sem acentos, todo em caixa baixa
-
+    nome_normalizado = Column(String, index=True) # nome sem acentos, todo em caixa baixa
+    nome_invertido = Column(String, index=True)   # normalizado inverido (reversed)
+    genero_masculino = Column(Float, index=True, default=0)
+    genero_feminino = Column(Float, index=True, default=0)
+    genero_ambos = Column(Float, index=True, default=0)   # nomes unisex, ex: Darcy
+    conhece_zero = Column(Integer, index=True, default=0) # pessoas que não conhecem ninguém com este nome
+    conhece_uma = Column(Integer, index=True, default=0)  # pessoas que conhecem uma pessoa com este nome
+    conhece_mais = Column(Integer, index=True, default=0) # pessoas que conhecem mais de uma pessoa com este nome
 
